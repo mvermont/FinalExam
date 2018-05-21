@@ -26,15 +26,19 @@ public class Retirement {
 
 		//TODO: Calculate AmountToSave
 		double pmt = 0; // <-- this should be fixed to calculate the real pmt
-		return pmt;
+		pmt = PMT((dAnnualReturnWorking/100)/12, iYearsToWork*12, 0, TotalAmountToSave(), false);
+		pmt = Math.round(pmt * 100.0) / 100.0;
+		return Math.abs(pmt);
 	}
 
 	public double TotalAmountToSave() {
 		
 		//TODO: Calculate the Total Amount Requried to save
 		double pv = 0;
-		//	Hint: Here's how to round a number: pv = Math.round(pv * 100.0) / 100.0;
-		return pv;
+		pv = PV((dAnnualReturnRetired/100)/12, iYearsRetired*12, (dRequiredIncome - dMonthlySSI), 0, false);
+		//	Hint: Here's how to round a number:
+		pv = Math.round(pv * 100.0) / 100.0;
+		return Math.abs(pv);
 	}
 
 	public static double PMT(double r, double n, double p, double f, boolean t) {

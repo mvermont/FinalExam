@@ -31,13 +31,13 @@ public class RetirementController implements Initializable {
 
 	private RetirementApp mainApp = null;
 	@FXML
-	private TextField txtSaveEachMonth;
+	private TextField txtSaveEachMonth; //not variable
 	@FXML
 	private TextField txtYearsToWork;
 	@FXML
 	private TextField txtAnnualReturnWorking;
 	@FXML
-	private TextField txtWhatYouNeedToSave;
+	private TextField txtWhatYouNeedToSave; //not variable
 	@FXML
 	private TextField txtYearsRetired;
 	@FXML
@@ -65,8 +65,12 @@ public class RetirementController implements Initializable {
 		// "\\d*?" - means any decimal number
 		// "\\d*(\\.\\d*)?" means any decimal, then optionally a period (.), then
 		// decmial
-		hmTextFieldRegEx.put(txtYearsToWork, "\\d*?");
-		hmTextFieldRegEx.put(txtAnnualReturnWorking, "\\d*(\\.\\d*)?");
+		hmTextFieldRegEx.put(txtYearsToWork, "[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0]");
+		hmTextFieldRegEx.put(txtAnnualReturnWorking, "[0-9](\\.[0-9]{1,2}){0,1}|10(\\.0{1,2}){0,1}");
+		hmTextFieldRegEx.put(txtYearsRetired, "[0-9]|1[0-9]|2[0-9]");
+		hmTextFieldRegEx.put(txtAnnualReturnRetired, "[0-9](\\.[0-9]{1,2}){0,1}|10(\\.0{1,2}){0,1}");
+		//hmTextFieldRegEx.put(txtRequiredIncome, value);
+		//hmTextFieldRegEx.put(txtMonthlySSI, value);
 
 		// Check out these pages (how to validate controls):
 		// https://stackoverflow.com/questions/30935279/javafx-input-validation-textfield
@@ -111,13 +115,11 @@ public class RetirementController implements Initializable {
 		// disable read-only controls
 		txtSaveEachMonth.setDisable(true);
 		txtWhatYouNeedToSave.setDisable(true);
-
-		// Clear, enable txtYearsToWork
-		txtYearsToWork.clear();
-		txtYearsToWork.setDisable(false);
-
-		// TODO: Clear, enable the rest of the input controls. Hint! You already have a
-		// HashMap of all the input controls....!!!!
+		
+		for(TextField k: hmTextFieldRegEx.keySet()) {
+			k.clear();
+			k.setDisable(false);
+		}
 	}
 
 	@FXML
@@ -131,5 +133,22 @@ public class RetirementController implements Initializable {
 		// TODO: Calculate txtWhatYouNeedToSave value...
 		// TODO: Then calculate txtSaveEachMonth, using amount from txtWhatYouNeedToSave
 		// as input
+		
+		Retirement r = new Retirement(Integer.parseInt(txtYearsToWork.getText()), 
+									  Double.parseDouble(txtAnnualReturnWorking.getText()), 
+									  Integer.parseInt(txtYearsRetired.getText()), 
+									  Double.parseDouble(txtAnnualReturnRetired.getText()), 
+									  Double.parseDouble(txtRequiredIncome.getText()), 
+									  Double.parseDouble(txtMonthlySSI.getText()));
+		txtWhatYouNeedToSave.setText("" + r.TotalAmountToSave());
+		txtSaveEachMonth.setText("" + r.MonthlySavings());
+		
+		/*txtWhatYouNeedToSave.setText("" + Math.round(((Math.abs(Retirement.PV((Double.parseDouble(txtAnnualReturnRetired.getText())/100)/12, 
+									Integer.parseInt(txtYearsRetired.getText())*12, 
+									(Integer.parseInt(txtRequiredIncome.getText()) - 
+										Integer.parseInt(txtMonthlySSI.getText())), 0, false)))*100.0) / 100.0));
+		txtSaveEachMonth.setText("" + Retirement.PMT((Double.parseDouble(txtAnnualReturnWorking.getText())/100)/12,
+								Integer.parseInt(txtYearsToWork.getText())*12, 
+								0, Integer.parseInt(txtWhatYouNeedToSave.getText()), false));*/
 	}
 }

@@ -65,12 +65,12 @@ public class RetirementController implements Initializable {
 		// "\\d*?" - means any decimal number
 		// "\\d*(\\.\\d*)?" means any decimal, then optionally a period (.), then
 		// decmial
-		hmTextFieldRegEx.put(txtYearsToWork, "[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0]");
+		hmTextFieldRegEx.put(txtYearsToWork, "[0-9]|[1-3][0-9]|4[0]");
 		hmTextFieldRegEx.put(txtAnnualReturnWorking, "[0-9](\\.[0-9]{1,2}){0,1}|10(\\.0{1,2}){0,1}");
-		hmTextFieldRegEx.put(txtYearsRetired, "[0-9]|1[0-9]|2[0-9]");
+		hmTextFieldRegEx.put(txtYearsRetired, "[0-9]|1[0-9]|2[0]");
 		hmTextFieldRegEx.put(txtAnnualReturnRetired, "[0-9](\\.[0-9]{1,2}){0,1}|10(\\.0{1,2}){0,1}");
-		//hmTextFieldRegEx.put(txtRequiredIncome, value);
-		//hmTextFieldRegEx.put(txtMonthlySSI, value);
+		hmTextFieldRegEx.put(txtRequiredIncome, "2[6-9][4-9][2-9]|[3-9][0-9][0-9][0-9]|10[0][0][0]");
+		hmTextFieldRegEx.put(txtMonthlySSI, "[0-9]|[0-9][0-9]|[0-9][0-9][0-9]|1[0-9][0-9][0-9]|2[0-6][0-4][0-2]");
 
 		// Check out these pages (how to validate controls):
 		// https://stackoverflow.com/questions/30935279/javafx-input-validation-textfield
@@ -100,12 +100,6 @@ public class RetirementController implements Initializable {
 			});
 		}
 
-		//
-		// TODO: Validate Working Annual Return %, accept only numbers and decimals
-		// TODO: Validate Years retired, accepted only decimals
-		// TODO: Validate Retired Annual Return %, accept only numbers and deciamls
-		// TODO: Validate Required Income, accept only decimals
-		// TODO: Validate Monthly SSI, accept only decimals
 	}
 
 	@FXML
@@ -129,10 +123,6 @@ public class RetirementController implements Initializable {
 
 		txtSaveEachMonth.setDisable(false);
 		txtWhatYouNeedToSave.setDisable(false);
-
-		// TODO: Calculate txtWhatYouNeedToSave value...
-		// TODO: Then calculate txtSaveEachMonth, using amount from txtWhatYouNeedToSave
-		// as input
 		
 		Retirement r = new Retirement(Integer.parseInt(txtYearsToWork.getText()), 
 									  Double.parseDouble(txtAnnualReturnWorking.getText()), 
@@ -143,12 +133,5 @@ public class RetirementController implements Initializable {
 		txtWhatYouNeedToSave.setText("" + r.TotalAmountToSave());
 		txtSaveEachMonth.setText("" + r.MonthlySavings());
 		
-		/*txtWhatYouNeedToSave.setText("" + Math.round(((Math.abs(Retirement.PV((Double.parseDouble(txtAnnualReturnRetired.getText())/100)/12, 
-									Integer.parseInt(txtYearsRetired.getText())*12, 
-									(Integer.parseInt(txtRequiredIncome.getText()) - 
-										Integer.parseInt(txtMonthlySSI.getText())), 0, false)))*100.0) / 100.0));
-		txtSaveEachMonth.setText("" + Retirement.PMT((Double.parseDouble(txtAnnualReturnWorking.getText())/100)/12,
-								Integer.parseInt(txtYearsToWork.getText())*12, 
-								0, Integer.parseInt(txtWhatYouNeedToSave.getText()), false));*/
 	}
 }

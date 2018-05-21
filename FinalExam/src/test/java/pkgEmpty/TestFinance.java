@@ -38,7 +38,6 @@ public class TestFinance {
 	@Test
 	public void TestPMT() {
 
-		//TODO: Test PMT.  Make sure PMT works as expected.
 		int iYearsToWork = 40;
 		double dAnnualReturnWorking = 0.07;
 		int iYearsRetired = 20;
